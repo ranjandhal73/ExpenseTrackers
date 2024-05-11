@@ -6,6 +6,7 @@ import AuthContextProvider from './store/AuthContext.jsx'
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
 import Signup from './components/Signup.jsx'
 import Welcome from './components/Welcome.jsx'
+import { Toaster } from 'react-hot-toast'
 
 
 
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
       <RouterProvider router={router}/>
+      <Toaster />
     </AuthContextProvider>
   </React.StrictMode>,
 )

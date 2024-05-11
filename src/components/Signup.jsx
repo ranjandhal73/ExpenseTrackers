@@ -9,7 +9,7 @@ function Signup() {
     const confirmPasswordInputRef =  useRef('')
     const [islLoggedIn,setIsLoggedIn] = useState(true)
 
-    const {login} = useContext(AuthContext);
+    const {login, token} = useContext(AuthContext);
 
     const navigate = useNavigate()
 
@@ -46,7 +46,6 @@ function Signup() {
             }
             
             const data = await response.json();
-            console.log('User has successfully signed up:', data);
             toast.success('User has successfully signed up!');
             login(data.idToken)
             if(data.idToken){
@@ -55,7 +54,6 @@ function Signup() {
            
         } catch (error) {
             toast.error(error.message)
-            alert(error.message)
         }
         
             emailInputRef.current.value = '';
@@ -68,51 +66,54 @@ function Signup() {
     }
 
   return (
-    
-    <div className='flex flex-col items-center gap-2 my-[11rem]' >
-            <form onSubmit={formHandler} className='flex flex-col items-center gap-4 shadow-lg px-6 py-4 bg-gray-600 rounded'>
-                <h1 className='font-semibold text-lg text-white italic'>{islLoggedIn ? 'Login' : 'SignUp'}</h1>
-                <label className='block'>
-                    <input 
-                        className='border-2 border-gray-200 hover:border-green-700'
-                        type="email" 
-                        required
-                        ref={emailInputRef}
-                        placeholder='Email'
-                    />
-                </label>
-
-                <label className='block'>
-                    <input 
-                        className='border-2 border-gray-200 hover:border-green-700'
-                        type="password" 
-                        required
-                        ref={passwordInputRef}
-                        placeholder='password'
-                    />
-                </label>
-
-                {!islLoggedIn && (
+    <>
+    {!token && (
+        <div className='flex flex-col items-center gap-2 my-[11rem]' >
+                <form onSubmit={formHandler} className='flex flex-col items-center gap-4 shadow-lg px-6 py-4 bg-gray-600 rounded'>
+                    <h1 className='font-semibold text-lg text-white italic'>{islLoggedIn ? 'Login' : 'SignUp'}</h1>
                     <label className='block'>
-                    <input 
-                        className='border-2 border-gray-200 hover:border-green-700'
-                        type="password" 
-                        required
-                        ref={confirmPasswordInputRef}
-                        placeholder='Confirm Password'
-                    />
-                </label>
-                )}
-                <button className='bg-green-700 text-white px-6 py-1 rounded-md text-lg hover:bg-green-900' 
-                type='submit'>{islLoggedIn ? 'Login' : 'SignUp'}</button>
+                        <input 
+                            className='border-2 border-gray-200 hover:border-green-700'
+                            type="email" 
+                            required
+                            ref={emailInputRef}
+                            placeholder='Email'
+                        />
+                    </label>
 
-            </form>
-           <button 
-           onClick={switchAuthHandler}
-           className='text-white px-6 py-2 rounded-md text-lg text-center shadow-2xl shadow-gray-600 bg-gray-600' 
-           >{islLoggedIn ? `Don't have an account? SignUp` : 'Have an account? Login'}</button>
-  
-    </div>
+                    <label className='block'>
+                        <input 
+                            className='border-2 border-gray-200 hover:border-green-700'
+                            type="password" 
+                            required
+                            ref={passwordInputRef}
+                            placeholder='password'
+                        />
+                    </label>
+
+                    {!islLoggedIn && (
+                        <label className='block'>
+                        <input 
+                            className='border-2 border-gray-200 hover:border-green-700'
+                            type="password" 
+                            required
+                            ref={confirmPasswordInputRef}
+                            placeholder='Confirm Password'
+                        />
+                    </label>
+                    )}
+                    <button className='bg-green-700 text-white px-6 py-1 rounded-md text-lg hover:bg-green-900' 
+                    type='submit'>{islLoggedIn ? 'Login' : 'SignUp'}</button>
+
+                </form>
+            <button 
+            onClick={switchAuthHandler}
+            className='text-white px-6 py-2 rounded-md text-lg text-center shadow-2xl shadow-gray-600 bg-gray-600' 
+            >{islLoggedIn ? `Don't have an account? SignUp` : 'Have an account? Login'}</button>
+    
+        </div>
+    )}
+    </>
   )
 }
 
