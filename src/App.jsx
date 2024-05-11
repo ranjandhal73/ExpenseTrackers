@@ -1,12 +1,15 @@
+import { Outlet } from "react-router-dom";
 import Signup from "./components/Signup"
-
+import { AuthContext } from "./store/AuthContext"
+import { useContext } from "react"
 
 function App() {
+  // const {islLoggedIn, token} = useContext(AuthContext);
 
   return (
     <>
-      <h1 className="text-purple-700">Expense Tracker</h1>
       <Signup />
+      <Outlet />
     </>
   )
 }
