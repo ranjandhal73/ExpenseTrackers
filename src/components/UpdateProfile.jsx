@@ -2,15 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { AuthContext } from "../store/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function UpdateProfile() {
   const [isShowing, setIsShowing] = useState(true);
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [name, setName] = useState("");
   const [profile, setProfile] = useState("");
-  // const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
   const {token} = useContext(AuthContext);
-  console.log(token);
+
   const updateHandler = async () => {
     if (token) {
       try {
@@ -67,14 +69,18 @@ function UpdateProfile() {
   // useEffect(async ()=>{
   //   getUserData()
   // },[])
+
+  const showingHandler = () =>{
+    // setIsShowing(false)
+    navigate(-1)
+  }
   return (
     <>
       {isShowing && !profileUpdated && (
         <div className="flex flex-col gap-5 ml-[50rem] mr-[5rem] mt-[2rem] shadow-md">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold">Contact Details</h1>
-            <button
-              onClick={() => setIsShowing(false)}
+            <button onClick={showingHandler}
               className="text-red-700 px-4 py-1 border border-red-700"
             >
               Cancel
