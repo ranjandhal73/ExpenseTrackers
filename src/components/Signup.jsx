@@ -56,9 +56,9 @@ function Signup() {
             toast.error(error.message)
         }
         
-            emailInputRef.current.value = '';
-            passwordInputRef.current.value = '';
-            confirmPasswordInputRef.current.value = '';
+            emailInputRef.current.value = null;
+            passwordInputRef.current.value = null;
+            confirmPasswordInputRef.current.value = null;
     }
 
     const switchAuthHandler = () =>{
@@ -104,7 +104,7 @@ function Signup() {
                     )}
                     <button className='bg-green-700 text-white px-6 py-1 rounded-md text-lg hover:bg-green-900' 
                     type='submit'>{islLoggedIn ? 'Login' : 'SignUp'}</button>
-
+                    {islLoggedIn? (<button onClick={()=>navigate('/forget-password')} className='text-orange-700'>Forget Password </button>) : ('')}
                 </form>
             <button 
             onClick={switchAuthHandler}

@@ -8,6 +8,7 @@ import Signup from './components/Signup.jsx'
 import Welcome from './components/Welcome.jsx'
 import { Toaster } from 'react-hot-toast'
 import UpdateProfile from './components/UpdateProfile.jsx'
+import ForgetPassword from './components/ForgetPassword.jsx'
 
 
 
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} >
       <Route path="" element={<Signup />}/>
       <Route path='/updateProfile' element={<UpdateProfile />} />
+      <Route path="/forget-password" element={<ForgetPassword />} />
     </Route>
   )
 )
