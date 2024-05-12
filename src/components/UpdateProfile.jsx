@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { FaGithub } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { AuthContext } from '../store/AuthContext';
@@ -6,6 +6,7 @@ import { AuthContext } from '../store/AuthContext';
 
 function UpdateProfile() {
   const [isShowing, setIsShowing] = useState(true);
+  const [profileUpdated, setProfileUpdated] = useState(false);
   const [name, setName] = useState('')
   const [profile, setProfile] = useState('');
   const {token} = useContext(AuthContext);
@@ -31,13 +32,35 @@ function UpdateProfile() {
       }
       const data = await response.json();
       console.log(data);
+      setProfileUpdated(data)
     } catch (error) {
       
     }
   }
+  // useEffect(async ()=>{
+  //   try {
+  //     const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBY-VIO9nNHjVOKopsMCLbv3MfaZ4clHRI',{
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         idToken: token,
+  //       }),
+  //       headers: {
+  //         'Content-type': 'application/json'
+  //       }
+  //     })
+  //     if(!response.ok){
+  //       const err = await response.json();
+  //       console.log(err);
+  //     }
+  //     const data = await response.json();
+  //     console.log(data);
+  //   } catch (error) {
+      
+  //   }
+  // },[])
   return (
     <>
-    {isShowing && (
+    {isShowing && !profileUpdated && (
       <div className='flex flex-col gap-5 ml-[50rem] mr-[5rem] mt-[2rem] shadow-md'>
       <div className='flex items-center justify-between'>
       <h1 className='text-xl font-bold'>Contact Details</h1>
