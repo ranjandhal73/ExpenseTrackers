@@ -7,14 +7,15 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Signup from './components/Signup.jsx'
 import Welcome from './components/Welcome.jsx'
 import { Toaster } from 'react-hot-toast'
+import UpdateProfile from './components/UpdateProfile.jsx'
 
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} >
-      <Route path="/login" element={<Signup />}/>
-      <Route path='/home' element={<Welcome />} />
+      <Route path="" element={<Signup />}/>
+      <Route path='/updateProfile' element={<UpdateProfile />} />
     </Route>
   )
 )

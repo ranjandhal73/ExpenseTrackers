@@ -47,9 +47,10 @@ function Signup() {
             
             const data = await response.json();
             toast.success('User has successfully signed up!');
+            console.log(data.idToken);
             login(data.idToken)
             if(data.idToken){
-                navigate('/home')
+                navigate('/')
             }
            
         } catch (error) {
