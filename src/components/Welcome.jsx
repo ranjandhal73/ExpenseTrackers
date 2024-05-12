@@ -18,7 +18,7 @@ function Welcome() {
     <>
       <div className='flex items-center justify-between px-6 py-2 border-b-2 shadow-md'>
           <div>Welcome To Expense Tracker</div>
-          <button onClick={logoutHandler}>Logout</button>
+          <button className='text-red-800 border border-red-700 px-6 py-1' onClick={logoutHandler}>Logout</button>
           {isShowing && (
             <div className='flex'>
             <p>Your profile is Incomplete.</p>

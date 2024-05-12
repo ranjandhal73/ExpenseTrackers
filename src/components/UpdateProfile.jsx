@@ -19,7 +19,7 @@ function UpdateProfile() {
           idToken: token,
           displayName: name,
           photoUrl: profile,
-          deleteAttribute: null,
+          deleteAttribute: [],
           returnSecureToken: true
         }),
         headers: {
@@ -37,26 +37,30 @@ function UpdateProfile() {
       
     }
   }
+ 
+  const getUserData = async () =>{
+    try {
+          const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBY-VIO9nNHjVOKopsMCLbv3MfaZ4clHRI',{
+            method: 'POST',
+            body: JSON.stringify({
+              idToken: token,
+            }),
+            headers: {
+              'Content-type': 'application/json'
+            }
+          })
+          if(!response.ok){
+            const err = await response.json();
+            console.log(err);
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          
+        }
+  }
   // useEffect(async ()=>{
-  //   try {
-  //     const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBY-VIO9nNHjVOKopsMCLbv3MfaZ4clHRI',{
-  //       method: 'POST',
-  //       body: JSON.stringify({
-  //         idToken: token,
-  //       }),
-  //       headers: {
-  //         'Content-type': 'application/json'
-  //       }
-  //     })
-  //     if(!response.ok){
-  //       const err = await response.json();
-  //       console.log(err);
-  //     }
-  //     const data = await response.json();
-  //     console.log(data);
-  //   } catch (error) {
-      
-  //   }
+  //   getUserData()
   // },[])
   return (
     <>

@@ -24,7 +24,6 @@ function Signup() {
         //     return null;
         // }
 
-        const userPassword = {password, confirmPassword};
         let url = islLoggedIn  
         ?'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDPSN5Cd0Nn9gvlbzhJLyZeiowu41n-JYI' 
         :'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDPSN5Cd0Nn9gvlbzhJLyZeiowu41n-JYI'
