@@ -7,10 +7,11 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Signup from './components/Signup.jsx'
 import Welcome from './components/Welcome.jsx'
 import { Toaster } from 'react-hot-toast'
-import UpdateProfile from './components/UpdateProfile.jsx'
+// import UpdateProfile from './components/UpdateProfile.jsx'
 import ForgetPassword from './components/ForgetPassword.jsx'
 import ExpenseForm from './components/ExpenseForm.jsx'
 import ExpenseContextProvider from './store/ExpenseContext.jsx'
+import UserProfileContextProvider from './store/UserProfileContext.jsx'
 
 
 const router = createBrowserRouter(
@@ -18,7 +19,6 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} >
       <Route path="" element={<Signup />}/>
       <Route path='' element={<ExpenseForm />} />
-      <Route path='/updateProfile' element={<UpdateProfile />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
     </Route>
   )
@@ -28,10 +28,12 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <ExpenseContextProvider >
-        <RouterProvider router={router}/>
-        <Toaster />
-      </ExpenseContextProvider>
+      <UserProfileContextProvider>
+        <ExpenseContextProvider >
+          <RouterProvider router={router}/>
+          <Toaster />
+        </ExpenseContextProvider>
+      </UserProfileContextProvider>
     </AuthContextProvider>
   </React.StrictMode>,
 )

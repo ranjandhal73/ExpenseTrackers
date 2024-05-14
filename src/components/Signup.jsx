@@ -2,15 +2,18 @@ import React, {useRef,useContext, useState} from 'react'
 import toast from 'react-hot-toast'
 import { AuthContext } from '../store/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import backgroundImage from '../assets/backgroundImage.jpeg'
 
 function Signup() {
     const emailInputRef =  useRef('')
     const passwordInputRef =  useRef('')
     const confirmPasswordInputRef =  useRef('')
-    const [islLoggedIn,setIsLoggedIn] = useState(true)
+    const [islLoggedIn,setIsLoggedIn] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {login, token} = useContext(AuthContext);
 
+    const apiKey = import.meta.env.VITE_EXPENSE_TRACKER_API_KEY;
     const navigate = useNavigate()
 
     const formHandler = async (e) => {
@@ -23,10 +26,11 @@ function Signup() {
         //     alert("Password Doesn't match")
         //     return null;
         // }
-
+        setIsLoading(true);
         let url = islLoggedIn  
-        ?'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDPSN5Cd0Nn9gvlbzhJLyZeiowu41n-JYI' 
-        :'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDPSN5Cd0Nn9gvlbzhJLyZeiowu41n-JYI'
+        ?`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`
+
+        :`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
         try {
             const response = await fetch (url,{
                 method: 'POST',
@@ -46,19 +50,21 @@ function Signup() {
             
             const data = await response.json();
             toast.success('User has successfully signed up!');
-            console.log(data.idToken);
             login(data.idToken)
             if(data.idToken){
                 navigate('/')
             }
+            setIsLoading(false);
            
         } catch (error) {
             toast.error(error.message)
+            setIsLoading(false);
         }
         
             emailInputRef.current.value = null;
             passwordInputRef.current.value = null;
             confirmPasswordInputRef.current.value = null;
+
     }
 
     const switchAuthHandler = () =>{
@@ -68,12 +74,13 @@ function Signup() {
   return (
     <>
     {!token && (
-        <div className='flex flex-col items-center gap-2 my-[11rem]' >
-                <form onSubmit={formHandler} className='flex flex-col items-center gap-4 shadow-lg px-6 py-4 bg-gray-600 rounded'>
+    <div style={{backgroundImage:`url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh'}} className='overflow-y-hidden absolute top-0 left-0 w-full'>
+        <div className='flex flex-col items-center gap-2 my-[11rem] w-full' >
+                <form onSubmit={formHandler} className='flex flex-col items-center gap-4 px-6 py-4 bg-gray-700 rounded  md:w-[25%] shadow-md shadow-white'>
                     <h1 className='font-semibold text-lg text-white italic'>{islLoggedIn ? 'Login' : 'SignUp'}</h1>
-                    <label className='block'>
+                    <label className='block w-full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700'
+                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
                             type="email" 
                             required
                             ref={emailInputRef}
@@ -81,9 +88,9 @@ function Signup() {
                         />
                     </label>
 
-                    <label className='block'>
+                    <label className='block w-full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700'
+                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
                             type="password" 
                             required
                             ref={passwordInputRef}
@@ -91,10 +98,11 @@ function Signup() {
                         />
                     </label>
 
+                    <div className='w-full'>
                     {!islLoggedIn && (
-                        <label className='block'>
+                        <label className='block full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700'
+                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
                             type="password" 
                             required
                             ref={confirmPasswordInputRef}
@@ -102,16 +110,19 @@ function Signup() {
                         />
                     </label>
                     )}
+                    </div>
                     <button className='bg-green-700 text-white px-6 py-1 rounded-md text-lg hover:bg-green-900' 
-                    type='submit'>{islLoggedIn ? 'Login' : 'SignUp'}</button>
+                    type='submit'>{islLoggedIn ? isLoading ? 'Submitting...': 'Login' : 'SignUp'}</button>
+                    
                     {islLoggedIn? (<button onClick={()=>navigate('/forget-password')} className='text-orange-700'>Forget Password </button>) : ('')}
                 </form>
             <button 
             onClick={switchAuthHandler}
-            className='text-white px-6 py-2 rounded-md text-lg text-center shadow-2xl shadow-gray-600 bg-gray-600' 
+            className='text-white px-6 py-2 rounded-md text-lg text-center shadow-2xl shadow-gray-600 bg-gray-600 md:w-[25%] my-4' 
             >{islLoggedIn ? `Don't have an account? SignUp` : 'Have an account? Login'}</button>
     
         </div>
+    </div>
     )}
     </>
   )

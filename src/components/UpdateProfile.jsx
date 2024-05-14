@@ -1,125 +1,165 @@
-import React, { useState, useContext, useEffect } from "react";
-import { FaGithub } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
-import { AuthContext } from "../store/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import React, { useState, useContext, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { UserProfileContext } from "../store/UserProfileContext";
+// import { AuthContext } from "../store/AuthContext";
 
-function UpdateProfile() {
-  const [isShowing, setIsShowing] = useState(true);
-  const [profileUpdated, setProfileUpdated] = useState(false);
-  const [name, setName] = useState("");
-  const [profile, setProfile] = useState("");
-  const navigate = useNavigate();
+// function UpdateProfile({setIsShowing}) {
+//   // const [isShowing, setIsShowing] = useState(true);
+//   const [profileUpdated, setProfileUpdated] = useState(true);
+//   const [name, setName] = useState("");
+//   const [profile, setProfile] = useState("");
+//   const navigate = useNavigate();
 
-  const {token} = useContext(AuthContext);
+//   const apiKey = import.meta.env.VITE_EXPENSE_TRACKER_API_KEY;
+//   const {token} = useContext(AuthContext);
+//   const {addUser} = useContext(UserProfileContext)
 
-  const updateHandler = async () => {
-    if (token) {
-      try {
-        const response = await fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBY-VIO9nNHjVOKopsMCLbv3MfaZ4clHRI",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              idToken: token,
-              displayName: name,
-              photoUrl: profile,
-              // deleteAttribute: [],
-              returnSecureToken: true,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(name, profile, token);
-        if (!response.ok) {
-          const err = await response.json();
-          console.log(err);
-        }
-        const data = await response.json();
-        console.log(data);
-        setProfileUpdated(data);
-      } catch (error) {}
-    }
-  };
 
-  const getUserData = async () => {
-    try {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBY-VIO9nNHjVOKopsMCLbv3MfaZ4clHRI",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            idToken: token,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        const err = await response.json();
-        console.log(err);
-      }
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {}
-  };
-  // useEffect(async ()=>{
-  //   getUserData()
-  // },[])
+//   const updateHandler = async () => {
+//     if (token) {
+//       try {
+//         const response = await fetch(
+//           `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`,
+//           {
+//             method: "POST",
+//             body: JSON.stringify({
+//               idToken: token,
+//               displayName: name,
+//               photoUrl: profile,
+//               deleteAttribute: [],
+//               returnSecureToken: true,
+//             }),
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//           }
+//         );
+//         if (!response.ok) {
+//           const err = await response.json();
+//           console.log(err);
+//         }
+//         const data = await response.json();
+//         // console.log(data);
+//         const usersFrofileData = {
+//           name: data.displayName,
+//           email: data.email,
+//           emailVerified: data.emailVerified,
+//           photoUrl: data.photoUrl,
+//         }
+//         addUser(data)
+//         setProfileUpdated(usersFrofileData);
+//       } catch (error) {}
+//     }
+//   };
 
-  const showingHandler = () =>{
-    // setIsShowing(false)
-    navigate(-1)
-  }
-  return (
-    <>
-      {isShowing && !profileUpdated && (
-        <div className="flex flex-col gap-5 ml-[50rem] mr-[5rem] mt-[2rem] shadow-md">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold">Contact Details</h1>
-            <button onClick={showingHandler}
-              className="text-red-700 px-4 py-1 border border-red-700"
-            >
-              Cancel
-            </button>
-          </div>
-          <div className="flex gap-5">
-            <label className="flex items-center gap-1">
-              <i>
-                <FaGithub />
-              </i>
-              <p>Full Name:</p>
-              <input
-                className="border-2 h-6"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </label>
+//   const getUserData = async () => {
+//     try {
+//       const response = await fetch(
+//         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${apiKey}`,
+//         {
+//           method: "POST",
+//           body: JSON.stringify({
+//             idToken: token,
+//           }),
+//           headers: {
+//             "Content-type": "application/json",
+//           },
+//         }
+//       );
+//       if (!response.ok) {
+//         const err = await response.json();
+//         console.log(err);
+//       }
+//       const data = await response.json();
+//       console.log(data);
+//       const user = data.users[0];
+//       const loadedUser = {
+//         name: user.displayName,
+//         email: user.email,
+//         photoUrl: user.photoUrl,
+//       };
+//       setProfileUpdated(loadedUser)
+//     } catch (error) {}
+//   };
 
-            <label className="flex items-center gap-1">
-              <i>
-                <CgProfile />
-              </i>
-              <p>Profile Photo URL:</p>
-              <input
-                className="border-2 h-6"
-                type="text"
-                value={profile}
-                onChange={(e) => setProfile(e.target.value)}
-              />
-            </label>
-          </div>
-          <button onClick={updateHandler} className="text-white bg-green-700">
-            Update
-          </button>
-        </div>
-      )}
-    </>
-  );
-}
+//   // useEffect(()=>{
+//   //   getUserData();
+//   // },[])
 
-export default UpdateProfile;
+//   const showingHandler = () =>{
+//     setProfileUpdated(false)
+//     // navigate(-1)
+//   }
+//   return (
+//     <>
+//     <div className="flex items-center">
+//       <div className="text-lg mx-[5rem]">
+//         <h1>Name: {profileUpdated.name}</h1>
+//         <div className="flex gap-5">
+//          <p>Email: {profileUpdated.email}</p>
+//          <div>{profileUpdated.emailVerified? <p className=" text-sky-400">Verified</p> :<button className="bg-sky-500 text-white text-lg px-4 rounded">Verify</button>}</div>
+//         </div>
+//         <p>Profile: {profileUpdated.photoUrl}</p>
+//       </div>
+// {/* 
+//         {profileUpdated && (
+          
+//         )} */}
+//   </div>
+//     </>
+//   );
+// }
+
+// export default UpdateProfile;
+
+// /*
+ 
+// */
+
+
+// /*
+// <div className="flex flex-col gap-3 bg-gray-500 py-3 px-6 ml-[20rem] mr-[20rem]">
+//         <div className="flex justify-around">
+//           <h1 className="text-xl font-bold">Contact Details</h1>
+//           <button
+//             onClick={showingHandler}
+//             className="text-red-700 px-4 py-1 border border-red-700"
+//           >
+//             Cancel
+//           </button>
+//         </div>
+
+//         <div className="flex justify-around py-3">
+//           <label className="flex items-center gap-1">
+//             <i>
+//               <FaGithub />
+//             </i>
+//             <p>Full Name:</p>
+//             <input
+//               className="border-2 h-6"
+//               type="text"
+//               value={name}
+//               onChange={(e) => setName(e.target.value)}
+//             />
+//           </label>
+
+//           <label className="flex items-center gap-1">
+//             <i>
+//               <CgProfile />
+//             </i>
+//             <p>Profile Photo URL:</p>
+//             <input
+//               className="border-2 h-6"
+//               type="text"
+//               value={profile}
+//               onChange={(e) => setProfile(e.target.value)}
+//             />
+//           </label>
+//         </div>
+//           <div className="flex flex-col items-center ">
+//             <button onClick={updateHandler} className="text-white bg-green-700 px-6 py-2 rounded">
+//               Update
+//             </button>
+//           </div>
+//       </div>
+// */

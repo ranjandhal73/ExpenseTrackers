@@ -7,7 +7,8 @@ import ExpenseForm from "./components/ExpenseForm";
 
 
 function App() {
-  const {islLoggedIn, token} = useContext(AuthContext);
+  const { token} = useContext(AuthContext);
+
 
   return (
     <>
