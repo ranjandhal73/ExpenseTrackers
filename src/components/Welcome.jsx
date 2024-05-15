@@ -48,7 +48,6 @@ function Welcome() {
           const usersFrofileData = {
             name: data.displayName,
             email: data.email,
-            emailVerified: data.emailVerified,
             photoUrl: data.photoUrl,
           }
           addUser(data)
@@ -57,7 +56,7 @@ function Welcome() {
         } catch (error) {}
       }
     };
-
+     
     const getUserData = async () => {
       try {
         const response = await fetch(
@@ -82,8 +81,9 @@ function Welcome() {
           name: user.displayName,
           email: user.email,
           photoUrl: user.photoUrl,
+          emailVerified: user.emailVerified,
         };
-        setUserProfileUpdated(true)
+        // setUserProfileUpdated(true)
         setProfileUpdated(loadedUser)
       } catch (error) {}
     };
@@ -109,7 +109,7 @@ function Welcome() {
         console.log(err);
       }
       const data = await response.json();
-      console.log(data);
+      toast.success('A verified email has been sent your registered email')
       
     } catch (error) {
       
@@ -123,8 +123,8 @@ function Welcome() {
     }
   return (
     <>
-      <div className='flex items-center justify-between px-6 py-2 border-b-2 shadow-md'>
-          <div>Welcome To Expense Tracker</div>
+      <div className='flex items-center justify-between px-8 py-4 border-b-2 shadow-md sticky top-0'>
+          <div>Welcome To Expense Tracker </div>
           <button className='text-red-800 border border-red-700 px-6 py-1' onClick={logoutHandler}>Logout</button>
           {!userProfileUpdated ? (
                <div className='flex'>
