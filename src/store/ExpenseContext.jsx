@@ -13,16 +13,11 @@ const ExpenseContextProvider = ({children}) =>{
 
     const addExpenseHandler = (expense) =>{ 
       console.log(expense);
-        for (const key in expense){  
-          console.log(expense[key]);
             setExpense((prevExpense) =>  {      
-                return [...prevExpense, expense[key] ]
-              })
-      }
-        
+                return [...prevExpense, expense ]
+              })    
     }
     const removeExpenseHandler = async (id) =>{
-        console.log(id);
       try {
         const response = await fetch (`https://expense-tracker-a6a03-default-rtdb.firebaseio.com/usersExpense/${id}.json`,{
           method: 'DELETE',
@@ -32,13 +27,13 @@ const ExpenseContextProvider = ({children}) =>{
         })
         if(!response.ok){
             const err = await response.json();
-            console.log(err);
+            throw new Error(err)
         }
         const data = await response.json();
         setExpense((prevExpense) => prevExpense.filter(expense => expense.id !== id))
-        console.log(data)
+        toast.success('Transaction Deleted!')
       } catch (error) {
-        
+        toast.error(error.message) 
       }
     }
 

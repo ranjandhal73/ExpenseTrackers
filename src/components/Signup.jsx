@@ -1,8 +1,11 @@
 import React, {useRef,useContext, useState} from 'react'
 import toast from 'react-hot-toast'
-import { AuthContext } from '../store/AuthContext'
+// import { AuthContext } from '../store/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import backgroundImage from '../assets/backgroundImage.jpeg'
+import { useSelector, useDispatch } from 'react-redux'
+import {login} from '../features/authSlice'
+
 
 function Signup() {
     const emailInputRef =  useRef('')
@@ -11,7 +14,9 @@ function Signup() {
     const [islLoggedIn,setIsLoggedIn] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
-    const {login, token} = useContext(AuthContext);
+    // const {login, token} = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.token);
 
     const apiKey = import.meta.env.VITE_EXPENSE_TRACKER_API_KEY;
     const navigate = useNavigate()
@@ -50,7 +55,7 @@ function Signup() {
             
             const data = await response.json();
             toast.success('User has successfully signed up!');
-            login(data.idToken)
+            dispatch(login(data.idToken))
             if(data.idToken){
                 navigate('/')
             }
@@ -114,7 +119,7 @@ function Signup() {
                     <button className='bg-green-700 text-white px-6 py-1 rounded-md text-lg hover:bg-green-900' 
                     type='submit'>{islLoggedIn ? isLoading ? 'Submitting...': 'Login' : 'SignUp'}</button>
                     
-                    {islLoggedIn? (<button onClick={()=>navigate('/forget-password')} className='text-orange-700'>Forget Password </button>) : ('')}
+                    {islLoggedIn? (<button onClick={()=>navigate('/forget-password')} className='text-blue-700'>Forget Password </button>) : ('')}
                 </form>
             <button 
             onClick={switchAuthHandler}

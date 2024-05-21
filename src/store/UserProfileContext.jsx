@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 export const UserProfileContext = createContext({
     user: [],
     addUser: (user) =>{},
-    removeUser: () =>{},
+    removeUser: (id) =>{},
 })
 
 const UserProfileContextProvider = ({children}) =>{
