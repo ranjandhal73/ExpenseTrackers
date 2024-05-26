@@ -1,12 +1,11 @@
 import { createPortal } from "react-dom";
-import React, { useState, useEffect } from "react";
-// import { UserProfileContext } from "../store/UserProfileContext";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import {addexpense} from '../features/expenseSlice'
+import { addexpense } from '../features/expenseSlice';
+import { IoClose } from "react-icons/io5";
 
-
-function Modal({setIsPlusShowing}) {
+function Modal({ setIsPlusShowing }) {
   const modalToShow = document.getElementById("modal");
 
   const [spentMoney, setSpentMoney] = useState("");
@@ -16,8 +15,7 @@ function Modal({setIsPlusShowing}) {
   const [time, setTime] = useState("");
   const dispatch = useDispatch();
   const user = useSelector(state => state.userDetails.users);
-
-  
+  const themeMode = useSelector(state => state.theme.darkMode);
   
   const expenseHandler = async () => {
     const newExpense = { spentMoney, desc, category, date, time };
@@ -40,7 +38,7 @@ function Modal({setIsPlusShowing}) {
       console.log(data);
       dispatch(addexpense({ id: data.name, ...newExpense }));
       toast.success("Expense has been added!");
-      setIsPlusShowing(false)
+      setIsPlusShowing(false);
     } catch (error) {
       console.error("Error adding expense:", error);
     }
@@ -50,21 +48,21 @@ function Modal({setIsPlusShowing}) {
     setCategory("");
   };
 
-
   return createPortal(
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-blue-400 p-8 rounded-lg w-full max-w-md">
+      <div className="relative bg-blue-400 p-8 rounded-lg w-full max-w-md">
         <button 
-          className=""
-          onClick={()=>setIsPlusShowing(false)}
+          className="absolute top-1 right-3 text-3xl text-black hover:text-red-700"
+          onClick={() => setIsPlusShowing(false)}
         >
-            Close</button>
+          <IoClose />
+        </button>
         <h1 className="text-center text-2xl font-bold mb-4">Add New Transaction</h1>
         <input
           type="text"
           required
           placeholder="Expense Name"
-          className="border-2 block mb-4 px-4 py-2 w-full rounded-md"
+          className={`border-2 block mb-4 px-4 py-2 w-full rounded-md ${themeMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
@@ -72,34 +70,34 @@ function Modal({setIsPlusShowing}) {
           <input 
             type="date" 
             required
-            className="border-2 px-4 py-2 rounded-md w-full" 
+            className={`border-2 px-4 py-2 rounded-md w-full ${themeMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
             value={date}
-            onChange={(e)=>setDate(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
             max={new Date().toISOString().split('T')[0]}
           />
           <input 
             type='time'
             required
-            className="border-2 px-4 py-2 rounded-md w-full" 
+            className={`border-2 px-4 py-2 rounded-md w-full ${themeMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
             value={time}
-            onChange={(e)=>setTime(e.target.value)}
+            onChange={(e) => setTime(e.target.value)}
           />
         </div>
         <select
-          className="border-2 block mb-4 px-4 py-2 w-full rounded-md"
+          className={`border-2 block mb-4 px-4 py-2 w-full rounded-md ${themeMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
           required
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="all">Select Category</option>
+          <option value="">Select Category</option>
           <option value="credit">Credit</option>
-          <option value="Debit">Debit</option>
+          <option value="debit">Debit</option>
         </select>
         <input
           type="text"
           required
           placeholder="Expense Amount"
-          className="border-2 block mb-4 px-4 py-2 w-full rounded-md"
+          className={`border-2 block mb-4 px-4 py-2 w-full rounded-md ${themeMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
           value={spentMoney}
           onChange={(e) => setSpentMoney(e.target.value)}
         />

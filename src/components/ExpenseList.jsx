@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import { ExpenseContext } from '../store/ExpenseContext';
 import {removeFromAPI, updateExpenseHandler} from '../features/apiCall'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {removeExpense, updateExpense} from '../features/expenseSlice'
 
 function ExpenseList({ expense, userId }) {
-  // const { removeExpense, updateExpense } = useContext(ExpenseContext);
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
   const [editedExpense, setEditedExpense] = useState({
@@ -18,6 +16,7 @@ function ExpenseList({ expense, userId }) {
   });
 
   const [prevDate, setPrevDate] = useState('');
+  const themeMode = useSelector(state => state.theme.darkMode);
 
   useEffect(()=>{
     setPrevDate(expense.date);
@@ -59,7 +58,7 @@ function ExpenseList({ expense, userId }) {
               name='spentMoney'
               value={editedExpense.spentMoney}
               onChange={handleEditChange}
-              className='font-bold text-2xl border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40'
+              className={`font-bold text-2xl border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
               placeholder='Amount'
             />
             <input
@@ -67,7 +66,7 @@ function ExpenseList({ expense, userId }) {
               name='desc'
               value={editedExpense.desc}
               onChange={handleEditChange}
-              className='font-semibold text-xl italic border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40'
+              className={`font-semibold text-xl italic border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
               placeholder='Description'
             />
             <input
@@ -75,7 +74,7 @@ function ExpenseList({ expense, userId }) {
               name='category'
               value={editedExpense.category}
               onChange={handleEditChange}
-              className='font-semibold text-xl italic border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40'
+              className={`font-semibold text-xl italic border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full md:w-32 lg:w-40 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
               placeholder='Category'
             />
           </div>

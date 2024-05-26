@@ -12,6 +12,7 @@ function ExpenseForm() {
   const [searchText, setSearchText] = useState("");
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
   const dateInputRef = useRef(null);
+  const themeMode = useSelector(state => state.theme.darkMode);
   const user = useSelector(state => state.userDetails.users);
   const userId = user ? user.userId : null;
   const expenses = useSelector((state) => state.expenses.expenses);
@@ -83,6 +84,8 @@ function ExpenseForm() {
 
   return (
     <>
+      <div className="text-sm md:text-lg font-bold ml-5 -mt-8">Welcome To Expense Tracker! {user && user.name ? <span className="text-xl italic font-serif">{user.name}</span> : null}</div>
+
       <div className="flex items-center justify-evenly px-4 md:px-8 py-4 w-full">
         <h1 className="text-xl md:text-2xl font-semibold">Transactions</h1>
         <div>
@@ -103,7 +106,7 @@ function ExpenseForm() {
           <input
             type="text"
             placeholder="Search your transaction here..."
-            className="border-2 block px-4 py-2 rounded-lg w-full"
+            className={`border-2 block px-4 py-2 rounded-lg w-full ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onFocus={handleSearchClick}
@@ -129,7 +132,7 @@ function ExpenseForm() {
           onClick={() => setIsPlusShowing(true)}
           className="fixed transform -translate-y-10 bottom-[1rem] right-[1rem] md:bottom-[1rem] md:right-[3rem] lg:bottom-[4rem] lg:right-[15rem] cursor-pointer"
         >
-          <CiCirclePlus className="text-5xl text-blue-800" />
+          <CiCirclePlus className={`text-5xl text-blue-800 font-bold ${themeMode ? 'text-white': ''}`} />
         </div>
       </div>
       <div className="text-center text-5xl text-blue-800">
@@ -142,6 +145,11 @@ function ExpenseForm() {
           <p className="text-green-500">Credit: {totalCredit}</p>
         </div>
       </div>
+      {filteredExpenses.length === 0 && (
+        <p className="text-center italic text-lg">You don't have any transaction. Please add a transaction by click on '+' button.</p>
+      )
+      }
+
       {filteredExpenses.map((item) => (
         <ExpenseList key={item.id} expense={item} userId={userId}/>
       ))}

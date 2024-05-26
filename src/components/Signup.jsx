@@ -17,7 +17,7 @@ function Signup() {
     // const {login, token} = useContext(AuthContext);
     const dispatch = useDispatch();
     const token = useSelector(state => state.auth.token);
-
+    const themeMode = useSelector(state => state.theme.darkMode);
     const apiKey = import.meta.env.VITE_EXPENSE_TRACKER_API_KEY;
     const navigate = useNavigate()
 
@@ -85,7 +85,7 @@ function Signup() {
                     <h1 className='font-semibold text-lg text-white italic'>{islLoggedIn ? 'Login' : 'SignUp'}</h1>
                     <label className='block w-full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
+                            className={`border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
                             type="email" 
                             required
                             ref={emailInputRef}
@@ -95,7 +95,7 @@ function Signup() {
 
                     <label className='block w-full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
+                            className={`border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
                             type="password" 
                             required
                             ref={passwordInputRef}
@@ -107,7 +107,7 @@ function Signup() {
                     {!islLoggedIn && (
                         <label className='block full'>
                         <input 
-                            className='border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3'
+                             className={`border-2 border-gray-200 hover:border-green-700 w-full h-9 text-xl px-3 ${themeMode ?'bg-gray-900 text-white' : 'bg-white text-black'}`}
                             type="password" 
                             required
                             ref={confirmPasswordInputRef}
