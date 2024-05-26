@@ -5,6 +5,7 @@ import ExpenseForm from "./components/ExpenseForm";
 import { useSelector, useDispatch } from "react-redux";
 import { setExpenses } from "./features/expenseSlice";
 import { setDarkMode } from "./features/themeSlice";
+import useAutoLogout from "./components/useAutoLogout";
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
   const user = useSelector(state => state.userDetails.users)
   const dispatch = useDispatch();
 
-
+  useAutoLogout();
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') ;
