@@ -124,7 +124,7 @@ function Signup() {
             <button 
             onClick={switchAuthHandler}
             className='text-white px-6 py-2 rounded-md text-lg text-center shadow-2xl shadow-gray-600 bg-gray-600 md:w-[25%] my-4' 
-            >{islLoggedIn ? `Don't have an account? SignUp` : 'Have an account? Login'}</button>
+            >{islLoggedIn ? <p>Don't have an account? <span className='text-blue-400'>SignUp</span></p> : <p>Have an account? <span className='text-green-400 font-bold'>Login</span></p>}</button>
     
         </div>
     </div>

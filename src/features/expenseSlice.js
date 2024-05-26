@@ -18,9 +18,7 @@ const expenseSlice = createSlice({
         removeExpense: (state,action) => {
             state.expenses = state.expenses.filter((expense) => expense.id !== action.payload.id)
         },
-
         updateExpense: (state,action) =>{
-            console.log(action.payload);
             state.expenses = state.expenses.map((expense) => expense.id === action.payload.id ? action.payload : expense)
         }
     }
