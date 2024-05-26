@@ -27,14 +27,14 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store} >
-      <AuthContextProvider>
-        <UserProfileContextProvider>
+      {/* <AuthContextProvider>
+        <UserProfileContextProvider> */}
           {/* <ExpenseContextProvider > */}
             <RouterProvider router={router}/>
             <Toaster />
           {/* </ExpenseContextProvider> */}
-        </UserProfileContextProvider>
-      </AuthContextProvider>
+        {/* </UserProfileContextProvider>
+      </AuthContextProvider> */}
     </Provider>
   </React.StrictMode>,
 )

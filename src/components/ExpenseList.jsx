@@ -4,7 +4,7 @@ import {removeFromAPI, updateExpenseHandler} from '../features/apiCall'
 import { useDispatch } from 'react-redux';
 import {removeExpense, updateExpense} from '../features/expenseSlice'
 
-function ExpenseList({ expense }) {
+function ExpenseList({ expense, userId }) {
   // const { removeExpense, updateExpense } = useContext(ExpenseContext);
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
@@ -30,7 +30,8 @@ function ExpenseList({ expense }) {
 
   const handleSave = async () => {
     try {
-      const updatedExpense = await updateExpenseHandler(editedExpense, expense.id);
+      const updatedExpense = await updateExpenseHandler(userId,editedExpense, expense.id);
+      console.log(updatedExpense);
       dispatch(updateExpense(updatedExpense));
       setIsEditing(false);
     } catch (error) {
@@ -39,9 +40,8 @@ function ExpenseList({ expense }) {
   };
 
   const removeHandler = (id) =>{
-    console.log(id);
-    removeFromAPI(id);
-    dispatch(removeExpense(id))
+    removeFromAPI(userId,id);
+    dispatch(removeExpense(userId,id))
   }
 
   console.log();

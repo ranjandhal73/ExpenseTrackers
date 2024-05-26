@@ -7,7 +7,7 @@ export const UserProfileContext = createContext({
 })
 
 const UserProfileContextProvider = ({children}) =>{
-    const setUserURL = 'https://expense-tracker-a6a03-default-rtdb.firebaseio.com/users.json'
+    const setUserURL = 'https://expense-tracker-cbb1f-default-rtdb.firebaseio.com/users.json'
     const [user, setUser] = useState([])
 
     const addUserHandler = async (user) =>{

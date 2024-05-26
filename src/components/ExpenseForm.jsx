@@ -12,7 +12,8 @@ function ExpenseForm() {
   const [searchText, setSearchText] = useState("");
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
   const dateInputRef = useRef(null);
-
+  const user = useSelector(state => state.userDetails.users);
+  const userId = user ? user.userId : null;
   const expenses = useSelector((state) => state.expenses.expenses);
   const reversedExpense = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -85,7 +86,7 @@ function ExpenseForm() {
       <div className="flex items-center justify-evenly px-4 md:px-8 py-4 w-full">
         <h1 className="text-xl md:text-2xl font-semibold">Transactions</h1>
         <div>
-          {totalPrice >= 10000 ? (
+          {totalPrice >= 100000 ? (
             <button className="bg-green-700 text-white px-4 py-2 rounded-lg" onClick={handleDownloadClick}>Download Your Transactions</button>
           ) : (
             <div className="flex items-center text-xl italic font-extralight">
@@ -142,7 +143,7 @@ function ExpenseForm() {
         </div>
       </div>
       {filteredExpenses.map((item) => (
-        <ExpenseList key={item.id} expense={item} />
+        <ExpenseList key={item.id} expense={item} userId={userId}/>
       ))}
     </>
   );

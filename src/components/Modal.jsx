@@ -1,26 +1,29 @@
 import { createPortal } from "react-dom";
-import React, { useState, useContext } from "react";
-import { ExpenseContext } from "../store/ExpenseContext";
+import React, { useState, useEffect } from "react";
+// import { UserProfileContext } from "../store/UserProfileContext";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {addexpense} from '../features/expenseSlice'
 
 
 function Modal({setIsPlusShowing}) {
   const modalToShow = document.getElementById("modal");
+
   const [spentMoney, setSpentMoney] = useState("");
   const [desc, setDesc] = useState("");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const dispatch = useDispatch();
-  // const { addExpense } = useContext(ExpenseContext);
+  const user = useSelector(state => state.userDetails.users);
 
+  
+  
   const expenseHandler = async () => {
     const newExpense = { spentMoney, desc, category, date, time };
 
     try {
-      const response = await fetch("https://expense-tracker-cbb1f-default-rtdb.firebaseio.com/usersExpense.json", {
+      const response = await fetch(`https://expense-tracker-cbb1f-default-rtdb.firebaseio.com/usersExpense/${user.userId}.json`, {
         method: "POST",
         body: JSON.stringify(newExpense),
         headers: {
@@ -34,6 +37,7 @@ function Modal({setIsPlusShowing}) {
       }
 
       const data = await response.json();
+      console.log(data);
       dispatch(addexpense({ id: data.name, ...newExpense }));
       toast.success("Expense has been added!");
       setIsPlusShowing(false)
@@ -50,7 +54,11 @@ function Modal({setIsPlusShowing}) {
   return createPortal(
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-blue-400 p-8 rounded-lg w-full max-w-md">
-        <button onClick={()=>setIsPlusShowing(false)}>Close</button>
+        <button 
+          className=""
+          onClick={()=>setIsPlusShowing(false)}
+        >
+            Close</button>
         <h1 className="text-center text-2xl font-bold mb-4">Add New Transaction</h1>
         <input
           type="text"
